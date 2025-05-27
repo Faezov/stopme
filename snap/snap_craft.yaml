@@ -1,0 +1,44 @@
+name: stopme
+base: core22
+version: '0.1'
+summary: Focus mode app that blocks distractions
+description: |
+  StopMe is a simple productivity tool that blocks distracting apps like Firefox or Steam during focus sessions.
+
+grade: stable
+confinement: strict
+
+apps:
+  stopme:
+    command: bin/stopme-wrapper
+    plugs:
+      - network
+      - process-control
+      - desktop
+      - desktop-legacy
+      - x11
+      - wayland
+    slots:
+      - dbus-stopme
+
+slots:
+  dbus-stopme:
+    interface: dbus
+    bus: session
+    name: stopme  # Must match what your app is requesting
+    
+parts:
+  stopme:
+    plugin: python
+    source: .
+    python-packages:
+      - psutil
+    stage-packages:
+      - python3-gi
+      - gir1.2-gtk-4.0
+    override-build: |
+      craftctl default
+      install -Dm755 stopme.py $CRAFT_PART_INSTALL/stopme.py
+      install -Dm755 bin/stopme-wrapper $CRAFT_PART_INSTALL/bin/stopme-wrapper
+      install -Dm644 blocked_apps.txt $CRAFT_PART_INSTALL/blocked_apps.txt
+
