@@ -1,1 +1,22 @@
 .venv/
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*.so
+
+# Virtual environments
+.venv/
+venv/
+
+# Snap build artifacts
+*.snap
+parts/
+prime/
+stage/
+
+# VSCode settings (if using VSCode)
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
